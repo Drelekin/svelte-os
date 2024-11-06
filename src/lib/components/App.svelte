@@ -8,9 +8,7 @@
 
 		<button class="btn btn-square btn-ghost btn-sm"> x </button>
 	</header>
-	<div class="overflow-auto">
-		<div class="h-[2000px]">
-			<slot />
-		</div>
+	<div class="grid w-full place-items-center overflow-auto">
+		<slot />
 	</div>
 </div>

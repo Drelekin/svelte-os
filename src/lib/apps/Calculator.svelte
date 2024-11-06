@@ -17,11 +17,12 @@
 	}
 
 	function chooseOperation(op: string) {
-		if (current === '' && previous !== '') {
-			operator = op;
+		if (current === '') {
+			if (previous !== '') {
+				operator = op;
+			}
 			return;
 		}
-		if (current === '') return;
 		if (previous !== '') {
 			compute();
 		}
@@ -75,41 +76,36 @@
 <svelte:window on:keydown={onkeydown} />
 
 <App name="Calculator">
-	<div class="max-w-md p-3.5 font-mono">
-		<div class="output mb-2 h-20 rounded bg-base-200 p-3.5 text-xl">
-			<p class="previous-operand">
-				{#if previous}
-					{previous} {operator}
-				{/if}
-			</p>
-			<p class="current-operand">
-				{#if current}
-					{current}
-				{/if}
+	<div class="mx-auto w-full max-w-md p-3.5 font-mono">
+		<div class="mb-2 flex h-20 items-center rounded-lg bg-base-100 p-3.5 text-2xl font-bold">
+			<p>
+				{previous}
+				{operator}
+				{current}
 			</p>
 		</div>
 
 		<div class="grid grid-flow-col grid-cols-4 grid-rows-5 gap-2">
-			<button class="btn" on:click={() => clear()}>AC</button>
-			<button class="btn" on:click={() => appendNumber('7')}>7</button>
-			<button class="btn" on:click={() => appendNumber('4')}>4</button>
-			<button class="btn" on:click={() => appendNumber('1')}>1</button>
-			<button class="btn col-span-2" on:click={() => appendNumber('0')}>0</button>
+			<button on:click={() => clear()} class="btn btn-lg">AC</button>
+			<button on:click={() => appendNumber('7')} class="btn btn-lg">7</button>
+			<button on:click={() => appendNumber('4')} class="btn btn-lg">4</button>
+			<button on:click={() => appendNumber('1')} class="btn btn-lg">1</button>
+			<button on:click={() => appendNumber('0')} class="btn btn-lg col-span-2">0</button>
 
-			<button class="btn" on:click={() => chooseOperation('/')}>/</button>
-			<button class="btn" on:click={() => appendNumber('8')}>8</button>
-			<button class="btn" on:click={() => appendNumber('5')}>5</button>
-			<button class="btn" on:click={() => appendNumber('2')}>2</button>
+			<button on:click={() => chooseOperation('/')} class="btn btn-lg">/</button>
+			<button on:click={() => appendNumber('8')} class="btn btn-lg">8</button>
+			<button on:click={() => appendNumber('5')} class="btn btn-lg">5</button>
+			<button on:click={() => appendNumber('2')} class="btn btn-lg">2</button>
 
-			<button class="btn" on:click={() => chooseOperation('*')}>*</button>
-			<button class="btn" on:click={() => appendNumber('9')}>9</button>
-			<button class="btn" on:click={() => appendNumber('6')}>6</button>
-			<button class="btn" on:click={() => appendNumber('3')}>3</button>
-			<button class="btn" on:click={() => appendNumber('.')}>.</button>
+			<button on:click={() => chooseOperation('*')} class="btn btn-lg">*</button>
+			<button on:click={() => appendNumber('9')} class="btn btn-lg">9</button>
+			<button on:click={() => appendNumber('6')} class="btn btn-lg">6</button>
+			<button on:click={() => appendNumber('3')} class="btn btn-lg">3</button>
+			<button on:click={() => appendNumber('.')} class="btn btn-lg">.</button>
 
-			<button class="btn" on:click={() => chooseOperation('-')}>-</button>
-			<button class="btn row-span-2 h-full" on:click={() => chooseOperation('+')}>+</button>
-			<button class="btn row-span-2 h-full" on:click={() => compute()}>=</button>
+			<button on:click={() => chooseOperation('-')} class="btn btn-lg">-</button>
+			<button on:click={() => chooseOperation('+')} class="btn btn-lg row-span-2 h-full">+</button>
+			<button on:click={() => compute()} class="btn btn-lg row-span-2 h-full">=</button>
 		</div>
 	</div>
 </App>
