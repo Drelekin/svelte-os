@@ -2,4 +2,4 @@
 	import App from '$lib/components/App.svelte';
 </script>
 
-<App>This a notes</App>
+<App name="Notes">This a notes</App>

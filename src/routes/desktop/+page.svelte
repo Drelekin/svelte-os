@@ -1,6 +1,7 @@
 <script>
 	import Icon from '@iconify/svelte';
-	import { Notes, Calculator } from '$lib';
+	import { Notes, Calculator, Time, Applications } from '$lib';
+	import Settings from '$lib/components/Settings.svelte';
 
 	let isCalculatorVisible = false;
 	let isNotesVisible = false;
@@ -24,10 +25,12 @@
 	class="bg-[url('https://raw.githubusercontent.com/LinuxKits/Distro-wallpapers/refs/heads/main/Fedora/32/F32_default_wallpaper_day.png')] bg-cover bg-center"
 >
 	<div class="grid h-dvh grid-rows-[auto_1fr_auto] bg-base-100/75 backdrop-blur">
-		<header class="sticky top-0 z-10 mx-2 grid grid-cols-3 rounded-b bg-base-100/75 backdrop-blur">
-			<div>left</div>
-			<div>center</div>
-			<div>right</div>
+		<header
+			class="sticky top-0 z-10 mx-2 grid grid-cols-[1fr_auto_1fr] items-center rounded-b bg-base-100/75 p-0.5 backdrop-blur"
+		>
+			<Applications />
+			<Time />
+			<Settings />
 		</header>
 
 		<main class={`grid ${gridColsClass} gap-2 overflow-hidden p-2`}>
@@ -44,7 +47,7 @@
 				<Icon icon="clarity:calculator-line" width="1.5rem" />
 			</button>
 			<button on:click={toggleNotes} class="btn btn-square rounded-b-none">
-				<Icon icon="clarity:calculator-line" width="1.5rem" />
+				<Icon icon="clarity:note-line" width="1.5rem" />
 			</button>
 		</footer>
 	</div>
