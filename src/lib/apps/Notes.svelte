@@ -80,35 +80,33 @@
 	}
 </script>
 
-<App name="Notes">
-	<div class="grid h-full w-full grid-rows-[auto_1fr] px-3.5">
-		<div class="flex items-center justify-between gap-2 py-3.5">
-			<div class="flex gap-2">
-				<button on:click={() => addToContent('👍')} class="btn">👍</button>
-				<button on:click={() => addToContent('❤️')} class="btn">❤️</button>
-				<button on:click={addRandomEmoji} class="btn">Surprise</button>
-				<button on:click={addRandomNumber} class="btn">0 to 100</button>
-			</div>
-			<div class="flex gap-2">
-				<button on:click={handleDownload} class="btn"> Download </button>
-				<button on:click={copyToClipboard} class="btn"> Copy </button>
-				<button on:click={clearContent} class="btn"> Clear </button>
-			</div>
+<div class="grid h-full w-full grid-rows-[auto_1fr] px-3.5">
+	<div class="flex items-center justify-between gap-2 py-3.5">
+		<div class="flex gap-2">
+			<button on:click={() => addToContent('👍')} class="btn">👍</button>
+			<button on:click={() => addToContent('❤️')} class="btn">❤️</button>
+			<button on:click={addRandomEmoji} class="btn">Surprise</button>
+			<button on:click={addRandomNumber} class="btn">0 to 100</button>
 		</div>
-
-		<label class="form-control">
-			<textarea
-				bind:value={content}
-				bind:this={textarea}
-				class="textarea h-full resize-none"
-				placeholder="Start typing here..."
-			></textarea>
-			<div class="label font-mono">
-				<span class="label-text-alt">{content.length} characters</span>
-				<span class="label-text-alt">
-					{content.trim() ? content.trim().split(/\s+/).length : 0} words
-				</span>
-			</div>
-		</label>
+		<div class="flex gap-2">
+			<button on:click={handleDownload} class="btn"> Download </button>
+			<button on:click={copyToClipboard} class="btn"> Copy </button>
+			<button on:click={clearContent} class="btn"> Clear </button>
+		</div>
 	</div>
-</App>
+
+	<label class="form-control">
+		<textarea
+			bind:value={content}
+			bind:this={textarea}
+			class="textarea h-full resize-none"
+			placeholder="Start typing here..."
+		></textarea>
+		<div class="label font-mono">
+			<span class="label-text-alt">{content.length} characters</span>
+			<span class="label-text-alt">
+				{content.trim() ? content.trim().split(/\s+/).length : 0} words
+			</span>
+		</div>
+	</label>
+</div>

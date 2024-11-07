@@ -168,9 +168,7 @@
 	}
 </script>
 
-<App name="Rain">
-	<canvas
-		bind:this={canvas}
-		class="h-full w-full {isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity"
-	></canvas>
-</App>
+<canvas
+	bind:this={canvas}
+	class="h-full w-full {isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity"
+></canvas>

@@ -215,50 +215,47 @@
 	$: flaggedCount = board.flat().filter((cell) => cell.isFlagged).length;
 </script>
 
-<App name="Minesweeper" hasOverflow={true}>
-	<div class="flex flex-col items-center justify-center p-3.5">
-		<div class="grid w-full grid-cols-3 items-center">
-			<p class="font-mono text-lg font-bold">
-				💣 {MINES - flaggedCount}
-			</p>
-			<button on:click={newGame} class="btn btn-square btn-lg mx-auto">
-				{#if gameOver || win}
-					{win ? '🤩' : '💀'}
-				{:else if mouseDown}
-					😮
-				{:else}
-					🙂
-				{/if}
-			</button>
-		</div>
-		<div class="my-3.5 rounded bg-gray-500 p-1 shadow-xl">
-			{#each board as row, rowIndex}
-				<div class="flex">
-					{#each row as cell, colIndex}
-						<button
-							on:contextmenu={(event) => handleRightClick(event, rowIndex, colIndex)}
-							on:click={() => handleCellClick(rowIndex, colIndex)}
-							on:mousedown={handleMouseDown}
-							on:mouseup={handleMouseUp}
-							on:mouseleave={handleMouseUp}
-							class="{getCellClass(
-								cell
-							)} btn-square btn-sm m-[0.5px] rounded-none p-0 text-lg font-extrabold {gameOver ||
-							win
-								? 'pointer-events-none cursor-default'
-								: ''}"
-						>
-							{getCellContent(cell)}
-						</button>
-					{/each}
-				</div>
-			{/each}
-		</div>
-		<button
-			on:click={() => (flagMode = !flagMode)}
-			class="btn {flagMode ? 'btn-outline btn-error' : ''}"
-		>
-			{flagMode ? '🚩 Flag Mode' : 'Normal Mode'}
+<div class="flex flex-col items-center justify-center p-3.5">
+	<div class="grid w-full grid-cols-3 items-center">
+		<p class="font-mono text-lg font-bold">
+			💣 {MINES - flaggedCount}
+		</p>
+		<button on:click={newGame} class="btn btn-square btn-lg mx-auto">
+			{#if gameOver || win}
+				{win ? '🤩' : '💀'}
+			{:else if mouseDown}
+				😮
+			{:else}
+				🙂
+			{/if}
 		</button>
 	</div>
-</App>
+	<div class="my-3.5 rounded bg-gray-500 p-1 shadow-xl">
+		{#each board as row, rowIndex}
+			<div class="flex">
+				{#each row as cell, colIndex}
+					<button
+						on:contextmenu={(event) => handleRightClick(event, rowIndex, colIndex)}
+						on:click={() => handleCellClick(rowIndex, colIndex)}
+						on:mousedown={handleMouseDown}
+						on:mouseup={handleMouseUp}
+						on:mouseleave={handleMouseUp}
+						class="{getCellClass(
+							cell
+						)} btn-square btn-sm m-[0.5px] rounded-none p-0 text-lg font-extrabold {gameOver || win
+							? 'pointer-events-none cursor-default'
+							: ''}"
+					>
+						{getCellContent(cell)}
+					</button>
+				{/each}
+			</div>
+		{/each}
+	</div>
+	<button
+		on:click={() => (flagMode = !flagMode)}
+		class="btn {flagMode ? 'btn-outline btn-error' : ''}"
+	>
+		{flagMode ? '🚩 Flag Mode' : 'Normal Mode'}
+	</button>
+</div>
