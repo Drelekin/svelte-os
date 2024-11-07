@@ -1,24 +1,37 @@
-<script>
+<script lang="ts">
 	import App from '$lib/components/App.svelte';
 	import { onMount } from 'svelte';
 
-	const ROWS = 4;
-	const COLS = 4;
-	const MINES = 1;
+	const ROWS: number = 9;
+	const COLS: number = 9;
+	const MINES: number = 10;
 
-	/** @type {{ isMine: boolean, isRevealed: boolean, neighborMines: number, isFlagged: boolean }[][]} */
-	let board = [];
-	let gameOver = false;
-	let win = false;
-	let flagMode = false;
+	let board: {
+		isMine: boolean;
+		isRevealed: boolean;
+		neighborMines: number;
+		isFlagged: boolean;
+	}[][] = [];
+	let gameOver: boolean = false;
+	let win: boolean = false;
+	let flagMode: boolean = false;
+	let mouseDown = false;
+
+	function handleMouseDown() {
+		mouseDown = true;
+	}
+
+	function handleMouseUp() {
+		mouseDown = false;
+	}
 
 	function initializeBoard() {
 		// Create empty board
 		board = Array(ROWS)
-			.fill()
+			.fill(null)
 			.map(() =>
 				Array(COLS)
-					.fill()
+					.fill(null)
 					.map(() => ({
 						isMine: false,
 						isRevealed: false,
@@ -67,7 +80,7 @@
 		board = [...board]; // Trigger reactivity
 	}
 
-	function revealCell(row, col) {
+	function revealCell(row: number, col: number) {
 		if (gameOver || win || board[row][col].isRevealed || board[row][col].isFlagged) return;
 
 		if (board[row][col].isMine) {
@@ -101,10 +114,17 @@
 		checkWin();
 	}
 
-	function toggleFlag(row, col) {
+	function toggleFlag(row: number, col: number) {
 		if (gameOver || win || board[row][col].isRevealed) return;
 		board[row][col].isFlagged = !board[row][col].isFlagged;
 		board = [...board]; // Trigger reactivity
+	}
+
+	function handleRightClick(event: MouseEvent, row: number, col: number) {
+		event.preventDefault();
+		if (!board[row][col].isRevealed) {
+			board[row][col].isFlagged = !board[row][col].isFlagged;
+		}
 	}
 
 	function revealAllMines() {
@@ -133,7 +153,7 @@
 		}
 	}
 
-	function handleCellClick(row, col) {
+	function handleCellClick(row: number, col: number) {
 		if (flagMode) {
 			toggleFlag(row, col);
 		} else {
@@ -141,7 +161,12 @@
 		}
 	}
 
-	function getCellContent(cell) {
+	function getCellContent(cell: {
+		isMine: boolean;
+		isRevealed: boolean;
+		neighborMines: number;
+		isFlagged: boolean;
+	}) {
 		if (!cell.isRevealed) {
 			return cell.isFlagged ? '🚩' : '';
 		}
@@ -151,69 +176,77 @@
 		return cell.neighborMines === 0 ? '' : cell.neighborMines;
 	}
 
-	function getCellClass(cell) {
-		const baseClass = 'w-10 h-10 flex items-center justify-center border border-gray-400 font-bold';
-
+	function getCellClass(cell: {
+		isMine: boolean;
+		isRevealed: boolean;
+		neighborMines: number;
+		isFlagged: boolean;
+	}) {
 		if (!cell.isRevealed) {
-			return `${baseClass} bg-gray-300 hover:bg-gray-400`;
+			return `bg-gray-200 hover:bg-gray-300`;
 		}
 		if (cell.isMine) {
-			return `${baseClass} bg-red-500`;
+			return `bg-error`;
 		}
 
 		const numberColors = [
 			'',
-			'text-blue-600',
-			'text-green-600',
-			'text-red-600',
-			'text-blue-900',
-			'text-red-900',
-			'text-teal-600',
-			'text-black',
-			'text-gray-600'
+			'text-blue-700',
+			'text-green-700',
+			'text-red-700',
+			'text-violet-700',
+			'text-pink-700',
+			'text-indigo-700',
+			'text-stone-700',
+			'text-amber-700'
 		];
 
-		return `${baseClass} bg-gray-100 ${numberColors[cell.neighborMines] || ''}`;
+		return `bg-gray-300 cursor-default ${numberColors[cell.neighborMines] || ''}`;
 	}
 
 	onMount(() => {
 		initializeBoard();
 	});
+
+	function newGame() {
+		initializeBoard();
+	}
+
+	$: flaggedCount = board.flat().filter((cell) => cell.isFlagged).length;
 </script>
 
-<App name="Minesweeper">
-	<div>
-		<div class="mb-4 space-x-4">
-			<button
-				on:click={initializeBoard}
-				class="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-			>
-				New Game
-			</button>
-			<button
-				on:click={() => (flagMode = !flagMode)}
-				class="px-4 py-2 {flagMode
-					? 'bg-yellow-500'
-					: 'bg-gray-500'} rounded text-white hover:bg-opacity-90"
-			>
-				{flagMode ? '🚩 Flag Mode' : 'Normal Mode'}
+<App name="Minesweeper" hasOverflow={true}>
+	<div class="flex flex-col items-center justify-center p-3.5">
+		<div class="grid w-full grid-cols-3 items-center">
+			<p class="font-mono text-lg font-bold">
+				💣 {MINES - flaggedCount}
+			</p>
+			<button on:click={newGame} class="btn btn-square btn-lg mx-auto">
+				{#if gameOver || win}
+					{win ? '🤩' : '💀'}
+				{:else if mouseDown}
+					😮
+				{:else}
+					🙂
+				{/if}
 			</button>
 		</div>
-
-		{#if gameOver || win}
-			<div class="mb-4 text-xl font-bold {win ? 'text-green-600' : 'text-red-600'}">
-				{win ? 'You Win!' : 'Game Over!'}
-			</div>
-		{/if}
-
-		<div class="inline-block border-4 border-gray-400">
+		<div class="my-3.5 rounded bg-gray-500 p-1 shadow-xl">
 			{#each board as row, rowIndex}
 				<div class="flex">
 					{#each row as cell, colIndex}
 						<button
+							on:contextmenu={(event) => handleRightClick(event, rowIndex, colIndex)}
 							on:click={() => handleCellClick(rowIndex, colIndex)}
-							class={getCellClass(cell)}
-							disabled={gameOver || win}
+							on:mousedown={handleMouseDown}
+							on:mouseup={handleMouseUp}
+							on:mouseleave={handleMouseUp}
+							class="{getCellClass(
+								cell
+							)} btn-square btn-sm m-[0.5px] rounded-none p-0 text-lg font-extrabold {gameOver ||
+							win
+								? 'pointer-events-none cursor-default'
+								: ''}"
 						>
 							{getCellContent(cell)}
 						</button>
@@ -221,5 +254,11 @@
 				</div>
 			{/each}
 		</div>
+		<button
+			on:click={() => (flagMode = !flagMode)}
+			class="btn {flagMode ? 'btn-outline btn-error' : ''}"
+		>
+			{flagMode ? '🚩 Flag Mode' : 'Normal Mode'}
+		</button>
 	</div>
 </App>
