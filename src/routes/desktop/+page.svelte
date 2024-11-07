@@ -1,10 +1,10 @@
 <script>
 	import Icon from '@iconify/svelte';
-	import { Notes, Calculator, Time, Applications } from '$lib';
-	import Settings from '$lib/components/Settings.svelte';
+	import { Notes, Calculator, Time, Applications, Settings, Minesweeper, Snake } from '$lib';
 
 	let isCalculatorVisible = false;
 	let isNotesVisible = false;
+	let isMinesweeperVisible = false;
 
 	function toggleCalculator() {
 		isCalculatorVisible = !isCalculatorVisible;
@@ -14,11 +14,24 @@
 		isNotesVisible = !isNotesVisible;
 	}
 
+	function toggleMinesweeper() {
+		isMinesweeperVisible = !isMinesweeperVisible;
+	}
+
 	// Reactive statement to compute the number of visible apps
-	$: visibleAppsCount = (isNotesVisible ? 1 : 0) + (isCalculatorVisible ? 1 : 0) + 1; // +1 for the App component
+	$: visibleAppsCount =
+		(isNotesVisible ? 1 : 0) +
+		(isCalculatorVisible ? 1 : 0) +
+		(isMinesweeperVisible ? 1 : 0) + // Add more apps as needed
+		1; // +1 for the App component
 
 	// Reactive statement to set the grid column class
-	$: gridColsClass = visibleAppsCount > 2 ? 'grid-cols-2' : 'grid-cols-1';
+	$: gridColsClass =
+		visibleAppsCount > 3
+			? 'grid-cols-2 grid-rows-2'
+			: visibleAppsCount > 2
+				? 'grid-cols-2'
+				: 'grid-cols-1';
 </script>
 
 <div
@@ -40,6 +53,10 @@
 			{#if isCalculatorVisible}
 				<Calculator />
 			{/if}
+			{#if isMinesweeperVisible}
+				<Minesweeper />
+			{/if}
+			<Snake />
 		</main>
 
 		<footer class="sticky bottom-0 z-10 flex justify-center gap-2">
@@ -48,6 +65,9 @@
 			</button>
 			<button on:click={toggleNotes} class="btn btn-square rounded-b-none">
 				<Icon icon="clarity:note-line" width="1.5rem" />
+			</button>
+			<button on:click={toggleMinesweeper} class="btn btn-square rounded-b-none">
+				<Icon icon="clarity:flag-line" width="1.5rem" />
 			</button>
 		</footer>
 	</div>
