@@ -6,7 +6,7 @@ import Time from './components/Time.svelte';
 import Applications from './components/Applications.svelte';
 import Settings from './components/Settings.svelte';
 import Minesweeper from './apps/Minesweeper.svelte';
-import Snake from './apps/Snake.svelte';
+import Matrix from './apps/Matrix.svelte';
 
 export { App };
 export { Calculator };
@@ -15,4 +15,4 @@ export { Time };
 export { Applications };
 export { Settings };
 export { Minesweeper };
-export { Snake };
+export { Matrix };

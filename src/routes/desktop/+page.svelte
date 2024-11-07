@@ -1,10 +1,11 @@
 <script>
 	import Icon from '@iconify/svelte';
-	import { Notes, Calculator, Time, Applications, Settings, Minesweeper, Snake } from '$lib';
+	import { Notes, Calculator, Time, Applications, Settings, Minesweeper, Matrix } from '$lib';
 
 	let isCalculatorVisible = false;
 	let isNotesVisible = false;
 	let isMinesweeperVisible = false;
+	let isMatrixVisible = false;
 
 	function toggleCalculator() {
 		isCalculatorVisible = !isCalculatorVisible;
@@ -18,8 +19,13 @@
 		isMinesweeperVisible = !isMinesweeperVisible;
 	}
 
+	function toggleMatrix() {
+		isMatrixVisible = !isMatrixVisible;
+	}
+
 	// Reactive statement to compute the number of visible apps
 	$: visibleAppsCount =
+		(isMatrixVisible ? 1 : 0) +
 		(isNotesVisible ? 1 : 0) +
 		(isCalculatorVisible ? 1 : 0) +
 		(isMinesweeperVisible ? 1 : 0) + // Add more apps as needed
@@ -56,7 +62,9 @@
 			{#if isMinesweeperVisible}
 				<Minesweeper />
 			{/if}
-			<Snake />
+			{#if isMatrixVisible}
+				<Matrix />
+			{/if}
 		</main>
 
 		<footer class="sticky bottom-0 z-10 flex justify-center gap-2">
@@ -67,6 +75,9 @@
 				<Icon icon="clarity:note-line" width="1.5rem" />
 			</button>
 			<button on:click={toggleMinesweeper} class="btn btn-square rounded-b-none">
+				<Icon icon="clarity:flag-line" width="1.5rem" />
+			</button>
+			<button on:click={toggleMatrix} class="btn btn-square rounded-b-none">
 				<Icon icon="clarity:flag-line" width="1.5rem" />
 			</button>
 		</footer>

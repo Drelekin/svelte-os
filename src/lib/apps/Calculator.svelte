@@ -75,9 +75,11 @@
 
 <svelte:window on:keydown={onkeydown} />
 
-<App name="Calculator">
+<App name="Calculator" hasOverflow={true}>
 	<div class="mx-auto w-full max-w-md p-3.5 font-mono">
-		<div class="mb-2 flex h-20 items-center rounded-lg bg-base-100 p-3.5 text-2xl font-bold">
+		<div
+			class="mb-2 flex h-20 items-center rounded-lg bg-base-200/75 p-3.5 text-2xl font-bold shadow-inner backdrop-blur"
+		>
 			<p>
 				{previous}
 				{operator}
@@ -104,7 +106,9 @@
 			<button on:click={() => appendNumber('.')} class="btn btn-lg">.</button>
 
 			<button on:click={() => chooseOperation('-')} class="btn btn-lg">-</button>
-			<button on:click={() => chooseOperation('+')} class="btn btn-lg row-span-2 h-full">+</button>
+			<button on:click={() => chooseOperation('+')} class="btn btn-lg row-span-2 h-full">
+				+
+			</button>
 			<button on:click={() => compute()} class="btn btn-lg row-span-2 h-full">=</button>
 		</div>
 	</div>

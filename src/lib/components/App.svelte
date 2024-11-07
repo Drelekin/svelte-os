@@ -1,5 +1,6 @@
 <script lang="ts">
 	export let name: string;
+	export let hasOverflow: boolean = false;
 </script>
 
 <div class="grid grid-rows-[auto_1fr] overflow-hidden rounded bg-base-100/75 backdrop-blur">
@@ -8,7 +9,7 @@
 
 		<button class="btn btn-square btn-ghost btn-sm"> x </button>
 	</header>
-	<div class="grid w-full place-items-center overflow-hidden">
+	<div class="grid w-full place-items-center {hasOverflow ? 'overflow-auto' : 'overflow-hidden'}">
 		<slot />
 	</div>
 </div>
